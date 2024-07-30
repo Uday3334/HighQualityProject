@@ -1,0 +1,1481 @@
+﻿<Window x:Class="SampleWPF_project.Ancillary"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SampleWPF_project"
+        mc:Ignorable="d"
+        Title="Ancillary" Height="450" Width="800">
+    <Grid>
+        <TabControl Name="Tabs1" TabStripPlacement="Top" Background="LightGray" BorderBrush="Blue" Margin="10,10,0,5">
+            <TabItem Header="Ancillary" IsSelected="True" Background="Gray">
+                <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" RenderTransformOrigin="0.507,0.496">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="400*"/>
+                        <ColumnDefinition Width="400*"/>
+                        <ColumnDefinition Width="200*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="170" />
+                        <RowDefinition Height="170"/>
+                        <RowDefinition Height="170"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="70"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10,0,10,10">
+                        <Label Content="Ancillary Vendor Name:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderAccount.FacilityName, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal"  HorizontalAlignment="Center" >
+                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="10,0,10,10">
+                            <Label Content="Provider Type:" FontWeight="Bold"/>
+                            <ComboBox ItemsSource="{Binding ProviderType, Mode=TwoWay}" SelectedItem="{Binding SelectedProviderAccount.ProviderType}" DisplayMemberPath="Description"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="10,0,10,10">
+                            <Label Content="Medicare ID:" FontWeight="Bold"/>
+                            <TextBox Text="{Binding SelectedProviderAccount.MedicareID, Mode=TwoWay}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="10,0,10,10">
+                            <Label Content="License Number:" FontWeight="Bold"/>
+                            <TextBox Text="{Binding SelectedProviderAccount.PractitionerLicenseNumber, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical" Margin="10,0,20,10">
+                        <Label Content="DEA Number:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderAccount.DEANumber, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <DataGrid x:Name="gridView" Margin="10,17,15,10" Grid.Row="1" Grid.ColumnSpan="3" AutoGenerateColumns="False" CanUserDeleteRows="True" CanUserAddRows="True" 
+                      ItemsSource="{Binding SelectedProviderTINGroupAndInfo}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding TaxIDNumber}" Header="TIN" />
+                            <DataGridTextColumn Binding="{Binding GroupName}" Header="DBA" />
+                            <DataGridTextColumn Binding="{Binding GroupNPI}" Header="Facility NPI" />
+                            <DataGridComboBoxColumn ItemsSource="{Binding PricingFlag}" SelectedValueBinding="{Binding LevelOfPricing}"  SelectedValuePath="Flag" DisplayMemberPath="Description"  Header="Pricing">
+                            </DataGridComboBoxColumn>
+                            <DataGridTextColumn Binding="{Binding EffectiveDate}" Header="Effective" />
+                            <DataGridTextColumn Binding="{Binding TermDate}" Header="Term" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+
+                    <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Height="160">
+                                <Label Content="Specialities:" Margin="10,0,10,0" FontWeight="Bold"/>
+                                <DataGrid Height="130" x:Name="gridView11" ItemsSource="{Binding SelectedProviderSpecialties}" Margin="10,0,15,0" 
+                                  AutoGenerateColumns="False">
+                                    <DataGrid.Columns>
+                                        <DataGridComboBoxColumn ItemsSource="{Binding Specialties}" SelectedValueBinding="{Binding Specialty}" SelectedValuePath="SpecialtyId" DisplayMemberPath="Description" Header="" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="1"  Height="160">
+                                <Label Content="RPGs:" Margin="10,0,10,0" FontWeight="Bold"/>
+                                <DataGrid Height="130" x:Name="gridView111" ItemsSource="{Binding SelectedProviderRpgs}" Margin="10,0,15,0" 
+                                  AutoGenerateColumns="False">
+                                    <DataGrid.Columns>
+                                        <DataGridComboBoxColumn ItemsSource="{Binding Rpgs}" SelectedValueBinding="{Binding RpgId}" SelectedValuePath="RPG_Id" DisplayMemberPath="RPGName" Header="RPG" />
+                                        <DataGridCheckBoxColumn Binding="{Binding ParentContractRpg}" Header="PC" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="2" Height="160">
+                                <Label Content="Contract Initiative(s):" Margin="10,0,10,0" FontWeight="Bold"/>
+                                <DataGrid Height="130" x:Name="gridView12" Margin="10,0,15,0" 
+                                  AutoGenerateColumns="False">
+                                    <DataGrid.Columns>
+                                        <DataGridComboBoxColumn ItemsSource="{Binding ContractInitiatives}" SelectedValuePath="InitiativeId" DisplayMemberPath="Description" Header="" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3" Margin="10,10,10,86" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                        <Label Content="Network Participation:" Margin="10,0,10,0" FontWeight="Bold"/>
+                        <DataGrid Height="143" Margin="0,0,0,20" x:Name="gridView3" ItemsSource="{Binding SelectedProviderNetworkParticipation}" 
+                          AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding ProviderId}" Header="ProvID" />
+                                <DataGridTextColumn Binding="{Binding NetworkId}" Header="Network ID" />
+                                <DataGridTextColumn Binding="{Binding Networks.NetworkName}" Header="Network" />
+                                <DataGridTextColumn Binding="{Binding RpgId}" Header="RPG_ID" />
+                                <DataGridTextColumn Binding="{Binding RPG.RPGName}" Header="RPG Name" />
+                                <DataGridTextColumn Binding="{Binding EffectiveDate}" Header="Effective" />
+                                <DataGridTextColumn Binding="{Binding TermDate}" Header="Term" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </StackPanel>
+
+                    <Border BorderBrush="Black" BorderThickness="1"  Grid.Column="2" Grid.Row="2"  Grid.RowSpan="3" Margin="5,0,15,68"/>
+                    <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Vertical" Margin="5,20,15,35" Grid.RowSpan="3">
+                        <Label Content="Effective Date:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" FontWeight="Bold"/>
+                        <DatePicker Text="{Binding SelectedProviderAccount.EffectiveDate, Mode=TwoWay}" Margin="10,5,25,5"/>
+
+                        <Label Content="Term Date:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderAccount.TermDate, Mode=TwoWay}" Margin="10,5,25,5"/>
+
+                        <Label Content="Last Updated Date:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" FontWeight="Bold"/>
+                        <TextBox IsEnabled="False" Text="{Binding SelectedProviderAccount.LastUpdatedDate, Mode=TwoWay}" Margin="10,5,25,5"/>
+
+                        <Label Content="HA Exported Failed:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" FontWeight="Bold"/>
+                        <TextBox IsEnabled="False" Text="{Binding SelectedProviderAccount.ExportFailed, Mode=TwoWay}" Margin="10,5,25,5"/>
+
+                        <Label Content="HA Notification Date:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" FontWeight="Bold"/>
+                        <TextBox IsEnabled="False" Text="{Binding SelectedProviderAccount.HealthaxisNotificationDate, Mode=TwoWay}" Margin="10,5,25,5"/>
+
+                        <Label Content="Exported Date:" HorizontalAlignment="lEFT" VerticalAlignment="Top" Margin="10,0,0,0" FontWeight="Bold"/>
+                        <TextBox IsEnabled="False" Text="{Binding SelectedProviderAccount.ExportedDate, Mode=TwoWay}" Margin="10,5,25,5"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="5" Grid.Column="2" Orientation="Vertical" Margin="5,0,10,-75" >
+                        <Label Content="Exclude From HA Export:" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,0,0,0" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderAccount.ExcludeFromHAExport, Mode=TwoWay}" Margin="10,0,25,5"/>
+                        <Label Content="Account Owner:" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,0,0,0" FontWeight="Bold"/>
+                        <ComboBox ItemsSource="{Binding AccountOwners, Mode=TwoWay}" SelectedItem="{Binding SelectedProviderAccount.AccountOwner}" DisplayMemberPath="FirstName"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Margin="0,0,20,10" Grid.RowSpan="2" VerticalAlignment="Center">
+                        <Button Content="Parent Account(s)" Command="{Binding ProviderParentAccountCommand}" Margin="10,10,30,10" Foreground="White" Background="#FFD65858" FontWeight="Bold" Height="30"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="5" Grid.Column="0" Margin="0,10,0,-75">
+                        <Label Content="System/Group Affiliation:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderAccount.SystemOrGroupAffiliation, Mode=TwoWay}" Margin="10,0,25,5"/>
+                        <Label Content="Website:" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,0,0,0" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderAccount.Website, Mode=TwoWay}" Margin="10,0,25,5"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Height="65" VerticalAlignment="Bottom" Grid.ColumnSpan="3" Margin="285,0,20,0" >
+                        <StackPanel Grid.Row="7" Grid.Column="1" Grid.RowSpan="2" Orientation="Vertical" Margin="10,0,10,10">
+                            <Label Content="Provider Count:" FontWeight="Bold"/>
+                            <TextBox Text="{Binding SelectedProviderAccount.ProviderCount, Mode=TwoWay}" Width="150"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Vertical" Grid.RowSpan="3" Margin="10,0,10,10">
+                            <Label Content="Coverage Type:" FontWeight="Bold"/>
+                            <TextBox Text="{Binding SelectedProviderAccount.CoverageType, Mode=TwoWay}" Width="150"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Vertical" Grid.RowSpan="2" Margin="10,0,0,10">
+                            <Label Content="PPO Provider Flag:" FontWeight="Bold"/>
+                            <TextBox Text="{Binding SelectedProviderAccount.PPOProviderFlag, Mode=TwoWay}" Width="150"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="5" Grid.Column="1" Margin="0,10,0,-30">
+                        <Label Content="Hospital Affiliation:" Margin="10,0,10,0" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderAccount.HospitalAffiliation, Mode=TwoWay}" Margin="10,0,10,0" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="5" Grid.Column="1" Margin="0,70,0,-75" Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border BorderBrush="Black" BorderThickness="1"/>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+                                <Label Content="Print/Export for Directories?" HorizontalAlignment="Center" FontWeight="Bold"/>
+                                <CheckBox IsChecked="{Binding SelectedProviderAccount.PrintOrExportForDirectories}" Margin="70,0,70,0" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="1"  Orientation="Vertical">
+                                <Label Content="Provider ID:"  Margin="10,0,0,0" FontWeight="Bold"/>
+                                <TextBox IsEnabled="False" Text="{Binding SelectedProviderAccount.ProviderId, Mode=TwoWay}" Margin="10,0,10,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+
+            <TabItem Header="Contacts" Background="Gray">
+                <Grid Margin="10,40,10,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="200*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="300"/>
+                    </Grid.RowDefinitions>
+
+                    <Border BorderBrush="Gray" BorderThickness="1"  Grid.ColumnSpan="6" Margin="-5,-20,-5,-20"  />
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="200*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="70" />
+                                <RowDefinition Height="70" />
+                                <RowDefinition Height="170"/>
+                                <RowDefinition Height="70"/>
+                                <RowDefinition Height="70"/>
+                                <RowDefinition Height="70"/>
+                                <RowDefinition Height="170"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="6" Margin="10,5,10,5"/>
+                            <StackPanel Grid.Row="0" Grid.Column="0"  Margin="20,10,10,10">
+                                <Label Content="First Name:" FontWeight="Bold"/>
+                                <TextBox Text="{Binding FirstName}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="10,10,10,10">
+                                <Label Content="Last Name:" FontWeight="Bold"/>
+                                <TextBox Text="{Binding LastName}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical" Margin="10,10,10,10">
+                                <Label Content="Title:"  FontWeight="Bold"/>
+                                <TextBox Text="{Binding Title}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Vertical" Margin="10,10,10,10">
+                                <Label Content="Contact type:" FontWeight="Bold"/>
+                                <TextBox Text="{Binding ContactType}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Vertical" Margin="10,10,10,10">
+                                <Label Content="Email:" FontWeight="Bold"/>
+                                <TextBox Text="{Binding Email}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="5" Orientation="Vertical" Margin="10,10,20,10">
+                                <Label Content="Department:" FontWeight="Bold"/>
+                                <TextBox Text="{Binding Department}"/>
+                            </StackPanel>
+
+                            <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="2" Margin="10,5,10,0"/>
+                            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Height="60">
+                                <StackPanel>
+                                    <Grid Height="60">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Label Content="Reports To:" FontWeight="Bold" Margin="20,0,10,0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom"/>
+                                        <TextBox Text="{Binding ReportsToFirstName}" Grid.Row="1" Grid.Column="0" Margin="20,0,10,10"/>
+                                        <TextBox Text="{Binding ReportsToLastName}" Grid.Row="1" Grid.Column="1" Margin="10,0,20,10"/>
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <Border Grid.Row="1" Grid.Column="2" BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="3" Margin="10,5,10,0"/>
+                            <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Height="60" >
+                                <StackPanel>
+                                    <Grid Height="60">
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+
+                                        <Label Content="Phone:" Margin="20,0,10,0" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" FontWeight="Bold"/>
+                                        <TextBox Text="{Binding Phone}" Grid.Row="1" Grid.Column="0" Margin="20,0,10,10"/>
+
+                                        <Label Content="Ext:" Margin="10,0,20,0" Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontWeight="Bold"/>
+                                        <TextBox Text="{Binding PhoneExt}" Grid.Row="1" Grid.Column="1" Margin="10,0,20,10"/>
+
+                                        <Label Content="Call:" Margin="20,0,10,0" Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom" FontWeight="Bold"/>
+                                        <TextBox Text="{Binding Cell}" Grid.Row="1" Grid.Column="2" Margin="20,0,10,10"/>
+
+                                        <Label Content="Fax:" Margin="10,0,20,0" Grid.Row="0" Grid.Column="3" VerticalAlignment="Bottom" FontWeight="Bold"/>
+                                        <TextBox Text="{Binding Fax}" Grid.Row="1" Grid.Column="3" Margin="10,0,20,10"/>
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="5" Height="60">
+                                <StackPanel>
+                                    <Grid Height="60">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+
+                                        <Label Content="Contact ID:" Margin="20,0,10,0" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" FontWeight="Bold"/>
+                                        <TextBox Text="{Binding ContactId}" IsEnabled="False" Grid.Row="1" Grid.Column="0" Margin="20,0,10,10"/>
+
+                                        <Label Content="Provider ID:" Margin="10,0,20,0" Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontWeight="Bold"/>
+                                        <TextBox Text="{Binding ProviderId}" IsEnabled="False" Grid.Row="1" Grid.Column="1" Margin="10,0,20,10"/>
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <Border Grid.Row="2" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="3" Margin="10,10,10,10"/>
+                            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Height="150">
+                                <Grid Height="150">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Content="Address 1:" Margin="20,20,10,0" FontWeight="Bold"/>
+                                    <TextBox Text="{Binding Address1}" Grid.Column="1" Margin="20,20,20,10"/>
+
+                                    <Label Content="Address 2:" Grid.Row="1" Margin="20,20,10,0" FontWeight="Bold"/>
+                                    <TextBox Text="{Binding Address2}" Grid.Row="1" Grid.Column="1" Margin="20,20,20,10"/>
+
+                                    <Label Content="City,State,Zip:" Grid.Row="2" Margin="20,20,10,0" FontWeight="Bold"/>
+                                    <StackPanel Grid.Row="2" Grid.Column="1">
+                                        <Grid Height="50">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="47*"/>
+                                                <ColumnDefinition Width="27*"/>
+                                                <ColumnDefinition Width="37*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox Grid.Column="0" Text="{Binding City}" Margin="20,20,10,10"/>
+                                            <ComboBox Grid.Column="1" Margin="0,20,0,8" 
+                                                      ItemsSource="{Binding UsStates}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="{Binding State}" Margin="0,0,10,0"/>
+                                                            <TextBlock Text="{Binding StateName}"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+
+
+                                            <TextBox Text="{Binding ZipCode}" Grid.Column="2" Margin="10,20,20,10"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+
+                            <Border Grid.Row="2" Grid.Column="3" BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="3" Margin="10,10,10,10"/>
+                            <Label Content="Note:" Grid.Row="2" Grid.Column="3" Margin="10,10,10,20" FontWeight="Bold"/>
+                            <TextBox Text="{Binding LastName}" Grid.Row="2" Grid.Column="3" Margin="114,20,20,20" Grid.ColumnSpan="3"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+
+            <TabItem Header="Credentialing" Background="Gray">
+                <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" RenderTransformOrigin="0.507,0.496">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="200*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="200" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="300"/>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="200"/>
+                        <RowDefinition Height="150"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Margin="10,0,10,0" />
+                    <Label Content="Basic Info:"  FontWeight="Bold" Grid.Row="0" Margin="10,0,10,0"/>
+
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Margin="10,0,10,10" Grid.ColumnSpan="4" />
+                    <Label Content="Credentialing ID:" Margin="30,50,10,120" Grid.Row="1"/>
+                    <TextBox Text="{Binding ProviderCredentials.CredentialingId}" Grid.Column="1"  Margin="10,50,50,120"  Grid.Row="1"/>
+
+                    <Label Content="Delegated Credentialing:" Margin="30,100,10,70"  Grid.Row="1"/>
+                    <CheckBox IsChecked="{Binding ProviderCredentials.DelegatedCredentialing}" Grid.Column="1"  Grid.Row="1" Margin="30,100,150,70" />
+
+                    <Label Content="Entity Name:" Margin="30,150,10,20"  Grid.Row="1"/>
+                    <TextBox Text="{Binding ProviderCredentials.CredentialingEntityId}" Grid.Column="1"  Grid.Row="1" Margin="10,150,30,20" Grid.ColumnSpan="3"/>
+
+                    <Label Grid.Column="2" Content="Provider ID:" Margin="0,50,10,120" HorizontalAlignment="Right" Width="71"  Grid.Row="1"/>
+                    <TextBox Text="{Binding ProviderCredentials.ProviderId}" Grid.Column="3"  Margin="50,50,30,120"  Grid.Row="1"/>
+
+                    <Label Grid.Column="2" Content="Credentialing Entity ID:" Margin="0,100,10,70" HorizontalAlignment="Right" Width="131"  Grid.Row="1"/>
+                    <TextBox Text="{Binding ProviderCredentials.CredentialingEntityId}" Grid.Column="3" Margin="50,100,30,70"  Grid.Row="1"/>
+
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Grid.Column="4" Margin="0,0,170,0"/>
+                    <Label Content="Credentialing Application Dates:" Grid.Row="0" Grid.Column="4" FontWeight="Bold" Grid.ColumnSpan="2"/>
+                    <Border Grid.Column="4" Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="0,0,10,10"/>
+                    <StackPanel Grid.Column="4" Margin="10,10,10,10" Grid.Row="1">
+                        <Grid Height="180">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Date Sent:"  Grid.Row="1" Margin="10"/>
+                            <Label Content="Date Received:"  Grid.Row="2" Margin="10"/>
+                            <Label Content="Date Approved:"   Grid.Row="3" Margin="10"/>
+
+                            <TextBox Text="{Binding ProviderCredentials.ApplicationSentDate}" Grid.Column="1" Grid.Row="1" Margin="10"/>
+                            <TextBox Text="{Binding ProviderCredentials.ApplicationReceivedDate}" Grid.Column="1" Grid.Row="2" Margin="10"/>
+                            <TextBox Text="{Binding ProviderCredentials.ApprovalDate}" Grid.Column="1" Grid.Row="3" Margin="10"/>
+                        </Grid>
+
+                    </StackPanel>
+
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="2" Margin="10,0,10,0"/>
+                    <Label Content="Application Checklist:"  FontWeight="Bold"  Grid.Row="2" Margin="10,0,10,0"/>
+                    <StackPanel Grid.Row="3" Margin="10,0,10,10" Grid.ColumnSpan="5">
+                        <Grid Height="280">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*"/>
+                                <ColumnDefinition Width="80*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="80*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="50*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="196*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="8" Grid.RowSpan="6" />
+                            <Label Content="Eff:" Grid.Row="2" Grid.Column="1" Margin="10,10,10,10"  HorizontalAlignment="Right"/>
+                            <Label Content="Eff:" Grid.Row="5" Grid.Column="1" Margin="10,10,10,10" HorizontalAlignment="Right"/>
+
+                            <TextBox Text="{Binding ProviderCredentials.FormsEffDate}" Grid.Row="2" Grid.Column="2" Margin="10,10,10,10" />
+                            <TextBox Text="{Binding ProviderCredentials.DeaEffDate}" Grid.Row="5" Grid.Column="2" Margin="10,10,10,10"/>
+
+                            <Label Content="Term:" Grid.Row="2" Grid.Column="3" Margin="10,10,10,10" HorizontalAlignment="Right" />
+                            <Label Content="Term:" Grid.Row="5" Grid.Column="3" Margin="10,10,10,10" HorizontalAlignment="Right"/>
+
+                            <TextBox Text="{Binding ProviderCredentials.FormsTermDate}" Grid.Row="2" Grid.Column="4" Margin="10,10,10,10"/>
+                            <TextBox Text="{Binding ProviderCredentials.DeaEffDate}" Grid.Row="5" Grid.Column="4" Margin="10,10,10,10"/>
+                            <TextBox Text="{Binding ProviderCredentials.CAQH}" Grid.Row="5" Grid.Column="7" Margin="10,10,30,10"/>
+
+                            <Label Content="Complete authorization and release forms" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" />
+                            <Label Content="Professional license with current expiration date" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" />
+                            <Label Content="Current State Board of Pharmacy Certificate" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" />
+                            <Label Content="Current DEA" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" />
+
+                            <CheckBox IsChecked="{Binding ProviderCredentials.Authorization}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding ProviderCredentials.License}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding ProviderCredentials.Pharmacy}" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding ProviderCredentials.DEA}" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                            <Label Content="Curriculum Vitae" Grid.Column="6" Grid.Row="0" Grid.ColumnSpan="3" />
+                            <Label Content="Malpractice insurance Proof of Coverage" Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="3" />
+                            <Label Content="Complete Board Certification Status form" Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="3" />
+                            <Label Content="Delegated Approved" Grid.Column="6" Grid.Row="3" Grid.ColumnSpan="3" />
+                            <Label Content="Application Incomplete" Grid.Column="6" Grid.Row="4" Grid.ColumnSpan="3" />
+                            <Label Content="CAQH:" Grid.Column="6" Grid.Row="5" HorizontalAlignment="Right" />
+
+                            <CheckBox IsChecked="{Binding ProviderCredentials.CurriculumVitae}" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding ProviderCredentials.MalpracticeIns}" Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding ProviderCredentials.CertStatus}" Grid.Row="2" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding ProviderCredentials.DelegatedApproved}" Grid.Row="3" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding ProviderCredentials.ApplicationIncomplete}" Grid.Row="4" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </StackPanel>
+
+
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="4" Margin="10,0,10,0"/>
+                    <Label Content="Credentialing Contact:" FontWeight="Bold" Grid.Row="4" Margin="10,0,10,45" Grid.RowSpan="2"/>
+
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="5" Grid.ColumnSpan="5" Margin="10,00,10,45"/>
+                    <StackPanel Grid.Row="5"  Margin="10,15,10,45">
+
+
+                        <Border Margin="10,0,10,0" BorderBrush="Black" BorderThickness="1" Height="30">
+                            <Label Content="Name:" />
+                        </Border>
+                        <Border Margin="10,10,10,0" BorderBrush="Black" BorderThickness="1" Height="30">
+                            <Label Content="Phone Number:"/>
+                        </Border>
+                        <Border Margin="10,10,10,20" BorderBrush="Black" BorderThickness="1" Height="30">
+                            <Label Content="E-Mail Address"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="5" Grid.Column="1" Margin="0,0,10,45" Grid.ColumnSpan="4" >
+                        <TextBox Text="{Binding ProviderCredentials.ContactName}" Margin="10,20,20,10"/>
+                        <TextBox Text="{Binding ProviderCredentials.ContactPhone}" Margin="10,15,20,0"/>
+                        <TextBox Text="{Binding ProviderCredentials.ContactEmail}" Margin="10,20,20,0"/>
+                    </StackPanel>
+
+                    <Border Grid.Row="5" BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="5" Margin="10,225,10,15" Grid.RowSpan="2">
+                        <StackPanel Grid.Row="5" Margin="10,10,10,10" Grid.ColumnSpan="5">
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,1100,0">
+                                <Label Content="Note" FontWeight="Bold" />
+                            </Border>
+                            <TextBox Text="{Binding ProviderCredentials.AdditionalInfoNeeded}" Margin="40,0,10,0" Height="60" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+
+            <TabItem Header="Direct Contracts" Background="Gray">
+                <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" RenderTransformOrigin="0.507,0.496">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="110*"/>
+                        <ColumnDefinition Width="80*"/>
+                        <ColumnDefinition Width="200*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="150"/>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="10,10,10,0">
+                        <Label Content="Contract Name:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderContractDetail.ContractName, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="10,10,10,0">
+                        <Label Content="Contract Type:" FontWeight="Bold"/>
+                        <ComboBox ItemsSource="{Binding ContractTypes}" 
+                                     SelectedItem="{Binding SelectedProviderContractDetail.ContractTypes}" DisplayMemberPath="Description" IsEditable="True" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical" Margin="0,10,0,0">
+                        <Label Content="Contract RPG ID:" FontWeight="Bold"/>
+                        <ComboBox IsEditable="True" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Vertical" Margin="10,10,10,0" Grid.ColumnSpan="2">
+                        <Label Content="RPG Name:" FontWeight="Bold"/>
+                        <TextBox />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="5" Margin="10,10,10,0" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,10,0">
+                                <Label Content="Provider ID:" FontWeight="Bold" FontSize="10" />
+                                <TextBox IsEnabled="False" IsReadOnly="True" Text="{Binding SelectedProviderAccount.ProviderId, Mode=TwoWay}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10,0,0,0">
+                                <Label Content="Contract ID:" FontWeight="Bold" FontSize="10" />
+                                <TextBox IsEnabled="False" IsReadOnly="True" Text="{Binding SelectedProviderContractDetail.ContractId, Mode=TwoWay}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" Margin="10,10,10,0">
+                        <Label Content="Reimbursement Exhibit Version:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderContractDetail.ReimbursementExhibitVersion, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="10,10,10,0">
+                        <Label Content="Version" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderContractDetail.Version, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Vertical" Margin="10,10,10,0" Grid.ColumnSpan="2">
+                        <Label Content="Negotiation Type:" FontWeight="Bold"/>
+                        <ComboBox IsEditable="True" ItemsSource="{Binding ContractNegotiationTypes}"
+                                     SelectedItem="{Binding SelectedProviderContractDetail.ContractNegotiationTypes}" DisplayMemberPath="Description"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Vertical" Margin="10,10,10,0">
+                        <Label Content="Negotiation Status:" FontWeight="Bold"/>
+                        <ComboBox IsEditable="True" ItemsSource="{Binding ContractNegotiationStatus}"
+                                     SelectedItem="{Binding SelectedProviderContractDetail.ContractNegotiationStatus}" DisplayMemberPath="Description"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" Margin="10,10,10,0" Grid.ColumnSpan="2">
+                        <Label Content="Description of Negotiation:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderContractDetail.DescriptionOfNegotiation, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Vertical" Margin="10,10,10,0" >
+                        <Label Content="Success Probability:" FontWeight="Bold"/>
+                        <ComboBox IsEditable="True" ItemsSource="{Binding ContractSuccessProbabilities}" DisplayMemberPath="Description"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Vertical" Margin="10,10,10,0" Grid.ColumnSpan="3">
+                        <Label Content="Contract PDF/Scanned Image:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SelectedProviderContractDetail.ContractPDF, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <Button Content="Browse..." Grid.Column="3" Grid.Row="3" Margin="10,20,10,20" FontWeight="Bold" Background="#FFD65858" Foreground="White" />
+
+                    <Border Grid.Row="1" Grid.Column="4" BorderBrush="Black" BorderThickness="1" Margin="10,35,10,490" Grid.RowSpan="6" Grid.ColumnSpan="2"/>
+                    <StackPanel Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Margin="10,10,10,385" Grid.RowSpan="6">
+                        <Grid Height="408">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="219*"/>
+                                <ColumnDefinition Width="100*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Content="Contracting Dates:" FontWeight="Bold" Grid.Row="0" />
+                            <Label Content="Effective Date:" FontWeight="Bold" Grid.Row="1" HorizontalAlignment="Right" Margin="10,10,10,0"/>
+                            <Label Content="Negotiation Start Date:" FontWeight="Bold" Grid.Row="2" HorizontalAlignment="Right" Margin="10,10,10,0"/>
+                            <Label Content="Target Completion Date:" FontWeight="Bold" Grid.Row="3" HorizontalAlignment="Right" Margin="10,10,10,0"/>
+                            <Label Content="Date Completed:" FontWeight="Bold" Grid.Row="4" HorizontalAlignment="Right" Margin="10,10,10,0"/>
+                            <Label Content="Termination Date:" FontWeight="Bold" Grid.Row="5" HorizontalAlignment="Right" Margin="10,10,10,0"/>
+                            <Label Content="Contract Sent Date:" FontWeight="Bold" Grid.Row="6" HorizontalAlignment="Right" Margin="10,10,10,0"/>
+                            <Label Content="Contract Received Date:" FontWeight="Bold" Grid.Row="7" HorizontalAlignment="Right" Margin="10,10,10,0"/>
+                            <Label Content="Contract Returned Date:" FontWeight="Bold" Grid.Row="8" HorizontalAlignment="Right" Margin="10,10,10,0"/>
+                            <Label Content="Number of Days in Negotiation:" FontWeight="Bold" Grid.Row="9" HorizontalAlignment="Right" Margin="10,10,10,0"/>
+
+                            <TextBox Text="{Binding SelectedProviderContractDetail.EffectiveDate, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Margin="10"/>
+                            <TextBox Text="{Binding SelectedProviderContractDetail.NegotiationStartDate, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Margin="10"/>
+                            <TextBox Text="{Binding SelectedProviderContractDetail.TargetCompletionDate, Mode=TwoWay}" Grid.Row="3" Grid.Column="1" Margin="10"/>
+                            <TextBox Text="{Binding SelectedProviderContractDetail.DateCompleted, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" Margin="10"/>
+                            <TextBox Text="{Binding SelectedProviderContractDetail.TerminationDate, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" Margin="10"/>
+                            <TextBox Text="{Binding SelectedProviderContractDetail.ContractSentDate, Mode=TwoWay}" Grid.Row="6" Grid.Column="1" Margin="10"/>
+                            <TextBox Text="{Binding SelectedProviderContractDetail.ContractReceivedDate, Mode=TwoWay}" Grid.Row="7" Grid.Column="1" Margin="10"/>
+                            <TextBox Text="{Binding SelectedProviderContractDetail.ContractReturnedDate, Mode=TwoWay}" Grid.Row="8" Grid.Column="1" Margin="10"/>
+                            <TextBox Text="{Binding SelectedProviderContractDetail.NumberOfDaysInNegotiation, Mode=TwoWay}" Grid.Row="9" Grid.Column="1" Margin="10"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Margin="10,10,10,10" ItemsSource="{Binding ContractNotes}"
+                      AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="100" Binding="{Binding ContractNoteId}" Header="Note ID" />
+                            <DataGridTextColumn Width="100" Binding="{Binding ContractId}" Header="Contract ID" />
+                            <DataGridTextColumn Width="200" Binding="{Binding DateAdded}" Header="Date Added" />
+                            <DataGridTextColumn Binding="{Binding Notes}" Header="Notes" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+
+                    <Border Grid.Row="6" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Margin="10,35,10,55"  Grid.ColumnSpan="3"/>
+                    <StackPanel Grid.Row="5" Grid.Column="0" Orientation="Vertical" Margin="10,10,10,0" >
+                        <Label Content="Contract ID:" FontWeight="Bold"/>
+                        <TextBox IsReadOnly="True" Text="{Binding SelectedProviderContractDetail.ContractId, Mode=TwoWay}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Vertical" Margin="10,10,10,0" >
+                        <Label Content="Verbiage ID:" FontWeight="Bold"/>
+                        <TextBox />
+                    </StackPanel>
+                    <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Margin="10,10,10,55">
+                        <Grid Height="435">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200*"/>
+                                <ColumnDefinition Width="100*"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <Label Content="Verbiage" FontWeight="Bold" Grid.Row="0" Grid.Column="0" VerticalAlignment="Top"/>
+                            <Label Content="Designated Payer Contact:" FontWeight="Bold" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <ComboBox Grid.Row="2" Grid.Column="0" IsEditable="True" Margin="10,0,30,0"/>
+
+                            <Label Content="Network Participation:" FontWeight="Bold" Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <ComboBox Grid.Row="4" Grid.Column="0" IsEditable="True" Margin="10,0,30,0"/>
+
+                            <Label Content="Claims Payment:" FontWeight="Bold" Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <ComboBox Grid.Row="6" Grid.Column="0" IsEditable="True" Margin="10,0,30,0"/>
+
+                            <Label Content="Reversal Of Claims Discount:" FontWeight="Bold" Grid.Row="7" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <ComboBox Grid.Row="8" Grid.Column="0" IsEditable="True" Margin="10,0,30,0"/>
+
+                            <Label Content="Enhanced Payment Services:" FontWeight="Bold" Grid.Row="9" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <ComboBox Grid.Row="10" Grid.Column="0" IsEditable="True" Margin="10,0,30,0"/>
+
+                            <Label Content="Claims Underpayment/Overpayment:" FontWeight="Bold" Grid.Row="11" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <ComboBox Grid.Row="12" Grid.Column="0" IsEditable="True" Margin="10,0,30,0"/>
+
+                            <Label Content="Dispue Resolution:" FontWeight="Bold" Grid.Row="13" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <ComboBox Grid.Row="14" Grid.Column="0" IsEditable="True" Margin="10,0,30,0"/>
+
+
+                            <Label Content="Term:" FontWeight="Bold" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <ComboBox Grid.Row="2" Grid.Column="1" IsEditable="True" Margin="5,0,10,0"/>
+
+                            <Label Content="Termination:" FontWeight="Bold" Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <ComboBox Grid.Row="4" Grid.Column="1" IsEditable="True" Margin="5,0,10,0"/>
+
+                            <Label Content="Amendments:" FontWeight="Bold" Grid.Row="5" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <ComboBox Grid.Row="6" Grid.Column="1" IsEditable="True" Margin="5,0,10,0"/>
+
+                            <Label Content="Assignment:" FontWeight="Bold" Grid.Row="7" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <ComboBox Grid.Row="8" Grid.Column="1" IsEditable="True" Margin="5,0,10,0"/>
+
+                            <Label Content="Audit:" FontWeight="Bold" Grid.Row="9" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <ComboBox Grid.Row="10" Grid.Column="1" IsEditable="True" Margin="5,0,10,0"/>
+
+                            <Label Content="Invoice Requests:" FontWeight="Bold" Grid.Row="11" Grid.Column="1" VerticalAlignment="Top"  Margin="10,0,10,0"/>
+                            <ComboBox Grid.Row="12" Grid.Column="1" IsEditable="True" Margin="5,0,10,0"/>
+
+                            <Label Content="Other Provision 1:" FontWeight="Bold" Grid.Row="13" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <TextBox Grid.Row="14" Grid.Column="1"  Margin="5,0,10,0"/>
+
+                            <Label Content="Other Provision 1:" FontWeight="Bold" Grid.Row="15" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <TextBox Grid.Row="16" Grid.Column="1" Margin="5,0,10,0"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="3" Margin="10,10,10,55">
+                        <Grid Height="435">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="100*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Grid.RowSpan="4" Grid.ColumnSpan="2"/>
+                            <Label Content="Primary IP Methodology:" FontSize="10" FontWeight="Bold" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <ComboBox Grid.Row="2" Grid.Column="0" IsEditable="True" Margin="10,0,10,0"/>
+
+                            <StackPanel>
+
+                            </StackPanel>
+
+                            <Border Grid.Row="5" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="0,15,0,13" />
+                            <Label Content="IP Stop Loss Threshold:" FontSize="10" FontWeight="Bold" Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <TextBox Grid.Row="7" Grid.Column="0" Margin="10,0,10,0"/>
+
+                            <Label Content="IP Stop Gain Threshold:"  FontSize="10" FontWeight="Bold" Grid.Row="8" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <TextBox Grid.Row="9" Grid.Column="0" Margin="10,0,10,0"/>
+
+                            <StackPanel>
+
+                            </StackPanel>
+
+                            <Border Grid.Row="11" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="0,0,0,10"/>
+                            <Label Content="OP Stop Loss Threshold:" FontSize="10" FontWeight="Bold" Grid.Row="12" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <TextBox Grid.Row="13" Grid.Column="0" Margin="10,0,10,0"/>
+
+                            <Label Content="IP Stop Gain Threshold:" FontSize="10" FontWeight="Bold" Grid.Row="14" Grid.Column="0" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <TextBox Grid.Row="15" Grid.Column="0" Margin="10,0,10,0"/>
+
+                            <Label Content="Primary IP Methodology:" FontSize="10" FontWeight="Bold" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <ComboBox Grid.Row="2" Grid.Column="1" IsEditable="True" Margin="10,0,10,0"/>
+
+                            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="10,10,10,0">
+                                <Label Content="Charge Master Protections:" HorizontalAlignment="Center"/>
+                                <CheckBox HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <Label Content="IP Stop Loss Discount:" FontSize="10" FontWeight="Bold" Grid.Row="6" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <TextBox Grid.Row="7" Grid.Column="1" Margin="10,0,10,0"/>
+
+                            <Label Content="IP Stop Gain Discount:"  FontSize="10" FontWeight="Bold" Grid.Row="8" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <TextBox Grid.Row="9" Grid.Column="1" Margin="10,0,10,0"/>
+
+                            <Label Content="OP Stop Loss Discount:" FontSize="10" FontWeight="Bold" Grid.Row="12" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <TextBox Grid.Row="13" Grid.Column="1" Margin="10,0,10,0"/>
+
+                            <Label Content="IP Stop Loss Discount:" FontSize="10" FontWeight="Bold" Grid.Row="14" Grid.Column="1" VerticalAlignment="Top" Margin="10,0,10,0" />
+                            <TextBox Grid.Row="15" Grid.Column="1" Margin="10,0,10,0"/>
+
+                            <Border Grid.Row="1" Grid.Column="2" BorderBrush="Black" BorderThickness="1" Grid.RowSpan="8" Margin="10,0,0,24"/>
+                            <StackPanel Grid.Row="1" Grid.Column="2" Grid.RowSpan="8">
+                                <Label Content="Anesthesia:" FontWeight="Bold" Margin="20,10,10,0"/>
+                                <TextBox Margin="20,0,20,10"/>
+
+                                <Label Content="Hospital Escalator:" FontWeight="Bold" Margin="20,0,20,0"/>
+                                <CheckBox HorizontalAlignment="Center"/>
+
+                                <Label Content="Methodology:" FontWeight="Bold" Margin="20,0,20,0"/>
+                                <ComboBox Margin="20,0,20,10" IsEditable="True"/>
+                            </StackPanel>
+
+                            <Label Content="Notes"  FontWeight="Bold" Grid.Row="10" Grid.Column="2" Margin="10,0,0,0"/>
+                            <TextBox Grid.Row="11" Grid.Column="2" Grid.RowSpan="5" Margin="10,10,10,10"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Locations" Background="Gray">
+                <Grid Margin="10,40,10,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="70*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="120*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200"/>
+                    </Grid.RowDefinitions>
+
+                    <Border BorderBrush="Gray" BorderThickness="1"  Grid.ColumnSpan="11" Margin="-5,-20,-5,-20"  />
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="11">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="70*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="120*"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="10,10,50,10" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                                <Label Content="Location Type:" FontWeight="Bold"/>
+                                <ComboBox Margin="10" IsEditable="True"/>
+                            </StackPanel>
+
+
+                            <StackPanel Grid.Row="3" Grid.Column="0" Margin="10,10,10,10" Grid.RowSpan="2">
+                                <Label Content="Location ID:" FontWeight="Bold" />
+                                <TextBox Text="{Binding ProviderLocationId}" Margin="10" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3" Grid.Column="1" Margin="10,10,10,10" Grid.RowSpan="2">
+                                <Label Content="Remit ID:" FontWeight="Bold" />
+                                <ComboBox Margin="10" IsEditable="True"/>
+                            </StackPanel>
+
+                            <Label Content="Address 1:" FontWeight="Bold" Grid.Row="0" Grid.Column="2"/>
+                            <Label Content="Address 2:" FontWeight="Bold" Grid.Row="1" Grid.Column="2"/>
+                            <Label Content="City,State,Zip:" FontWeight="Bold" Grid.Row="3" Grid.Column="2"/>
+                            <Label Content="County" FontWeight="Bold" Grid.Row="4" Grid.Column="2"/>
+                            <Label Content="Region:" FontWeight="Bold" Grid.Row="4" Grid.Column="4"/>
+
+                            <TextBox Text="{Binding Address1}" Grid.Row="0" Grid.Column="3" Margin="10,10,10,10" Grid.ColumnSpan="3"/>
+                            <TextBox Text="{Binding Address2}" Grid.Row="1" Grid.Column="3" Margin="10,10,10,10" Grid.ColumnSpan="3"/>
+                            <ComboBox Text="{Binding City}" IsEditable="True"  Grid.Row="3" Grid.Column="4" Margin="10,10,10,10"/>
+                            <TextBox Text="{Binding State}" Grid.Row="3" Grid.Column="5" Margin="10,10,10,10"/>
+                            <TextBox Text="{Binding ZipCode}" Grid.Row="3" Grid.Column="3" Margin="10,10,10,10"/>
+                            <TextBox Text="{Binding County}" Grid.Row="4" Grid.Column="5" Margin="10,10,10,10"/>
+                            <TextBox Text="{Binding RegionCode}" Grid.Row="4" Grid.Column="3" Margin="10,10,10,10"/>
+
+
+                            <StackPanel Grid.Row="0" Grid.Column="6" Margin="10,10,10,10" Grid.RowSpan="2">
+                                <Label Content="Phone:" FontWeight="Bold" />
+                                <TextBox Text="{Binding Phone}" Margin="10"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="7" Margin="10,10,10,10" Grid.RowSpan="2">
+                                <Label Content="Ext:" FontWeight="Bold" />
+                                <TextBox Text="{Binding PhoneExt}" Margin="10"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="8" Margin="10,10,10,10" Grid.RowSpan="2">
+                                <Label Content="Effective Date:" FontWeight="Bold" />
+                                <TextBox Text="{Binding EffectiveDate}" Margin="10"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Grid.Column="9" Margin="10,10,10,10" Grid.RowSpan="2">
+                                <Label Content="Term Date:" FontWeight="Bold" />
+                                <TextBox Text="{Binding TermDate}" Margin="10"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3" Grid.Column="6" Margin="10,10,10,10" Grid.RowSpan="2">
+                                <Label Content="Fax:" FontWeight="Bold" />
+                                <TextBox Text="{Binding Fax}" Margin="10"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3" Grid.Column="7" Margin="10,10,10,10" Grid.RowSpan="2">
+                                <Label Content="Provider ID:" FontWeight="Bold" />
+                                <TextBox Text="{Binding ProviderId}" Margin="10"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3" Grid.Column="8" Margin="10,10,10,10" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                                <Label Content="Last Updated:" FontWeight="Bold" />
+                                <TextBox Text="{Binding LastUpdatedDate}" Margin="10"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Utilization" Background="Gray">
+                <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" RenderTransformOrigin="0.507,0.496">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60*"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="110*"/>
+                        <ColumnDefinition Width="110*"/>
+                        <ColumnDefinition Width="120*"/>
+                        <ColumnDefinition Width="130*"/>
+                        <ColumnDefinition Width="160*"/>
+
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="70" />
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="5,10,5,0">
+                        <Label Content="ID:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding ProviderUtilization.ProviderUtilizationId}" IsEnabled="False"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="5,10,5,0">
+                        <Label Content="Initiative:" FontWeight="Bold"/>
+                        <ComboBox IsEditable="True" ItemsSource="{Binding ContractInitiatives}" DisplayMemberPath="Description" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical" Margin="10,10,10,0">
+                        <Label Content="Claim Count:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding ProviderUtilization.ClaimCount}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Vertical" Margin="5,10,5,0">
+                        <Label Content="Total Billed:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding ProviderUtilization.TotalBilled}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Vertical" Margin="5,10,5,0">
+                        <Label Content="Total Repriced:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding ProviderUtilization.TotalRepriced}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="5" Orientation="Vertical" Margin="10,10,10,0">
+                        <Label Content="Average Discount:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding ProviderUtilization.AverageDiscount}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="6" Orientation="Vertical" Margin="10,10,10,0">
+                        <Label Content="Potential POS Revenue:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding ProviderUtilization.PotentialPOSRevenue}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" Margin="5,10,70,0" Grid.ColumnSpan="2">
+                        <Label Content="Provider ID:" FontWeight="Bold"/>
+                        <TextBox Text="{Binding ProviderUtilization.ProviderId}" IsEnabled="False"/>
+                    </StackPanel>
+
+                    <Label Content="Notes:" Grid.Row="1" Grid.Column="2" Margin="10" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="4" Margin="10,10,20,10" Text="{Binding ProviderUtilization.Notes}"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="W9" Background="Gray">
+                <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" RenderTransformOrigin="0.507,0.496">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="150"/>
+                        <RowDefinition Height="390"/>
+                        <RowDefinition Height="220"/>
+                        <RowDefinition/>
+
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200*"/>
+                        <ColumnDefinition Width="400*"/>
+                        <ColumnDefinition Width="200*"/>
+                    </Grid.ColumnDefinitions>
+
+
+
+                    <StackPanel Margin="50,0,20,0" Grid.Row="1">
+                        <Label Content="Provider ID :" FontWeight="Bold"/>
+                        <TextBox/>
+                    </StackPanel>
+
+                    <StackPanel  Grid.Row="1" Grid.Column="1">
+                        <Grid Height="50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <Label Content="W9 ID :" FontWeight="Bold"/>
+                                <TextBox/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <Border BorderBrush="Black" BorderThickness="0,0,1,1" Grid.Row="2" Margin="40,10,0,0"/>
+                    <StackPanel Grid.Row="2">
+                        <Grid Height="150">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.RowSpan="2">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="W9"  FontSize="30" HorizontalAlignment="Left" Margin="90,0,0,-20" FontWeight="Bold" Grid.ColumnSpan="2" Width="63"  />
+                                </Grid>
+                            </StackPanel>
+
+                            <Label Content="Form" Grid.Row="1" Margin="40,0,0,0" />
+                            <Label Content="(Rev. January 2011)" Grid.Row="2" Margin="40,0,0,0" />
+                            <Label Content="Department of the Treasury" Grid.Row="3" Margin="40,0,0,0" />
+                            <Label Content="Internal Revenue Service" Grid.Row="4" Margin="40,0,0,0"/>
+                        </Grid>
+                    </StackPanel>
+
+
+                    <Border BorderBrush="Black" BorderThickness="1,0,1,1" Grid.Row="2" Grid.Column="1" Margin="0,10,0,0"/>
+                    <StackPanel Grid.Row="2" Grid.Column="1">
+                        <Grid Height="150">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Reuest for Taxpayer" VerticalAlignment="Bottom" FontWeight="Bold" HorizontalAlignment="Center" FontSize="18"/>
+                            <Label Content="Iderntification Number and Certification" Grid.Row="1" VerticalAlignment="Top" FontWeight="Bold" HorizontalAlignment="Center" FontSize="18"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <Border BorderBrush="Black" BorderThickness="1,0,0,1" Grid.Row="2" Grid.Column="2" Margin="0,10,40,0"/>
+                    <StackPanel Grid.Row="2" Grid.Column="2">
+                        <Grid Height="150">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Give Form to the" Grid.Row="1" VerticalAlignment="Center" Margin="10,0,20,0" FontSize="18" />
+                            <Label Content="requester. Do not" Grid.Row="2" VerticalAlignment="Center" Margin="10,0,20,0" FontSize="18"/>
+                            <Label Content="send to the IRS." Grid.Row="3" VerticalAlignment="Center" Margin="10,0,20,0" FontSize="18"/>
+                        </Grid>
+                    </StackPanel>
+
+
+                    <Border BorderBrush="Black" BorderThickness="1,1,0,1" Grid.Row="3"  Margin="70,0,40,0" Grid.ColumnSpan="3"/>
+                    <StackPanel Grid.Row="3" Grid.ColumnSpan="3">
+                        <Grid Height="365" Margin="10,10,10,10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="100"/>
+                                <RowDefinition Height="120"/>
+                                <RowDefinition Height="100"/>
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
+
+                            <Border BorderBrush="Black" BorderThickness="1,0,0,1"  Margin="60,0,30,0" Grid.ColumnSpan="3"/>
+                            <StackPanel Grid.Row="0" Margin="60,0,20,5">
+                                <Grid Height="100">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Label Content="Name (as shown on your income tax return)" Grid.Row="0" Margin="10,0,10,0"/>
+                                    <TextBox Grid.Row="1" Margin="10,0,10,0"/>
+                                    <Border BorderBrush="Black" BorderThickness="0,0,0,1" Grid.Row="1" Margin="-10,0,10,0"   />
+                                    <Label Content="Business name/disregrated entity name, if different from above  " Margin="10,0,10,0" Grid.Row="2"/>
+                                    <TextBox Grid.Row="3" Margin="10,0,10,0"/>
+                                </Grid>
+                            </StackPanel>
+
+                            <Border BorderBrush="Black" BorderThickness="1,0,0,1" Grid.Row="1"  Margin="60,0,30,15"/>
+                            <StackPanel Grid.Row="1" Margin="70,0,20,15">
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="19*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel>
+                                        <Grid Height="100">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Label Content="Check appropriate box for federal tax: " Grid.Row="0"/>
+
+
+                                            <StackPanel Grid.Row="1">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="28*"/>
+                                                        <ColumnDefinition Width="4*"/>
+                                                        <ColumnDefinition Width="25*"/>
+                                                        <ColumnDefinition Width="4*"/>
+                                                        <ColumnDefinition Width="20*"/>
+                                                        <ColumnDefinition Width="4*"/>
+                                                        <ColumnDefinition Width="20*"/>
+                                                        <ColumnDefinition Width="4*"/>
+                                                        <ColumnDefinition Width="18*"/>
+                                                        <ColumnDefinition Width="4*"/>
+                                                        <ColumnDefinition Width="18*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Label Content="Classification required:"/>
+
+                                                    <CheckBox Grid.Column="1" VerticalAlignment="Center"/>
+                                                    <Label Content="Individual/sole proprietor:" FontSize="10" Grid.Column="2"/>
+                                                    <CheckBox Grid.Column="3" VerticalAlignment="Center"/>
+                                                    <Label Content="C Corporation:" FontSize="10" Grid.Column="4"/>
+                                                    <CheckBox Grid.Column="5" VerticalAlignment="Center"/>
+                                                    <Label Content="S Corporation:" FontSize="10" Grid.Column="6"/>
+                                                    <CheckBox Grid.Column="7" VerticalAlignment="Center"/>
+                                                    <Label Content="Partnership:" FontSize="10" Grid.Column="8"/>
+                                                    <CheckBox Grid.Column="9" VerticalAlignment="Center"/>
+                                                    <Label Content="Trust/estate:" FontSize="10" Grid.Column="10"/>
+
+                                                </Grid>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Row="2">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="19*"/>
+                                                        <ColumnDefinition Width="221*" />
+                                                        <ColumnDefinition Width="45*"/>
+                                                    </Grid.ColumnDefinitions>
+
+
+                                                    <CheckBox Grid.Column="0" VerticalAlignment="Center" Height="15"/>
+                                                    <Label Content="Limited liability company.Enter the tax classification(C=C Corporation, S=S Corporation, P=partnership)" Grid.ColumnSpan="2" Margin="19,0,0,0"/>
+                                                    <TextBox Grid.Column="2" VerticalAlignment="Center" Margin="10,0,10,0"/>
+
+
+                                                </Grid>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Row="3">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="38*"/>
+                                                        <ColumnDefinition Width="121*" />
+                                                        <ColumnDefinition Width="411*"/>
+                                                    </Grid.ColumnDefinitions>
+
+
+                                                    <CheckBox Grid.Column="0" VerticalAlignment="Center" Height="15"/>
+                                                    <Label Content="Other(see instructions)"  Grid.ColumnSpan="2" Margin="19,0,0,0"/>
+                                                    <TextBox Grid.Column="2" VerticalAlignment="Center" Margin="10,0,80,0" Height="18"/>
+
+
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <Border BorderBrush="Black" BorderThickness="1,1,0,1" Grid.Column="1" Margin="0,0,10,0"  />
+                                    <StackPanel Grid.Column="1">
+                                        <Grid Height="110">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="4*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <CheckBox VerticalAlignment="Center" Grid.Column="0" Margin="5,0,0,0"/>
+                                            <Label Content="Exempt payee" VerticalAlignment="Center" Grid.Column="1"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                </Grid>
+                            </StackPanel>
+
+                            <Border BorderBrush="Black" BorderThickness="1,0,0,1" Grid.Row="2" Margin="60,0,30,0" Grid.ColumnSpan="3"/>
+                            <StackPanel Grid.Row="2" Margin="70,0,20,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="43*"/>
+                                        <ColumnDefinition Width="26*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <Grid Height="100">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Label Content="Address(number, street, and apt. or suite no.)" Grid.Row="0"/>
+                                            <TextBox Grid.Row="1"/>
+                                            <Border BorderBrush="Black" BorderThickness="0,0,0,1" Grid.Row="1" Margin="-10,0,-12,0"  />
+                                            <Label Content="city, State and ZIP code" Grid.Row="2"/>
+                                            <StackPanel Grid.Row="3">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="26*"/>
+                                                        <ColumnDefinition Width="7*"/>
+                                                        <ColumnDefinition Width="10*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBox Grid.Column="0"/>
+                                                    <ComboBox IsEditable="True" Grid.Column="1" Margin="10,0,10,0"/>
+                                                    <TextBox Grid.Column="2"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
+                                    <Border BorderBrush="Black" BorderThickness="1,0,0,1" Grid.Column="1" Margin="10,-15,30,0" />
+                                    <Label Content="Requester's name and address(optional)" Grid.Column="1" Margin="20,0,10,10"/>
+                                </Grid>
+                            </StackPanel>
+                            <Label Content="List account number(s) here (optional)" Grid.Row="3" Margin="70,0,20,5"/>
+
+
+                        </Grid>
+                    </StackPanel>
+
+
+
+                    <StackPanel Grid.Row="4" Grid.ColumnSpan="3" Margin="10,0,10,0">
+                        <Grid Height="205">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="130*"/>
+                                <RowDefinition Height="50*" />
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition Width="34*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Part I" Background="Black" Foreground="White" HorizontalContentAlignment="Center" FontWeight="Bold"/>
+                                    <Border BorderBrush="Black" BorderThickness="0,0,0,1" Grid.Row="1" Grid.Column="1" Margin="-10,0,30,0"  />
+                                    <Label Content="Taxpayer Identification Number(TIN)" Grid.Column="1" Margin="50,0,0,0" FontWeight="Bold" />
+                                </Grid>
+                            </StackPanel>
+
+
+                            <StackPanel Grid.Row="1" Grid.RowSpan="3">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="55*"  />
+                                        <ColumnDefinition Width="23*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Margin="10,0,10,0">
+                                        <Grid Height="130">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Row="0" Content="Enter your TIN in the appropriate box. The TIN provided must match the name given on the Name"/>
+                                            <Label Grid.Row="1" Content="to avoid backup withholding. For individuals, this is your social security number (SSN). However, for a"/>
+                                            <Label Grid.Row="2" Content="resident alien, sole proprietor, or disregarded entity, see the Part I instructions on page 3. For other"/>
+                                            <Label Grid.Row="3" Content="entities, it is your identification number(EIN). If you do not have a number, see How to get a"/>
+                                            <Label Grid.Row="4" Content="TIN on page 3."/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Margin="10">
+                                        <Label Content="Social security number"/>
+                                        <TextBox Margin="0,0,20,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+
+
+                            <StackPanel Grid.Row="2" Grid.RowSpan="3">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="55*"  />
+                                        <ColumnDefinition Width="23*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Margin="10,0,10,0">
+                                        <Grid Height="50" >
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Row="0" Content="Note. If the account is in more than one name, see the chart on page 4 for guildlines on whose"/>
+                                            <Label Grid.Row="1" Content="number to enter."/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Margin="10">
+                                        <Label Content="Employer identification number"/>
+                                        <TextBox Margin="0,0,20,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="5" Grid.ColumnSpan="3" Margin="10,0,10,0">
+                        <Grid Height="50">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Content="W9 PDF:" Grid.Column="1" Margin="10,0,30,0"/>
+                            <Button Content="Browser..." Grid.Column="0" Grid.Row="1" Margin="40,0,0,0"  Foreground="White" Background="#FFD65858" FontWeight="Bold" />
+                            <TextBox Grid.Row="1" Grid.Column="1" Margin="10,0,30,0"/>
+                        </Grid>
+                    </StackPanel>
+
+
+                </Grid>
+            </TabItem> 
+
+</TabControl>
+    
+    </Grid>
+</Window>
