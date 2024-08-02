@@ -1,1 +1,1 @@
-# SampleWPF project
+Scientist Data Management system
